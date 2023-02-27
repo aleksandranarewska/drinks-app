@@ -9,17 +9,18 @@ import Foundation
 import UIKit
 class HttpRequestHelper{
     static let shared = HttpRequestHelper()
-    func getData<T : Codable>(type : T?, url: URL ,completion: @escaping (T?) -> ()) {
+    func getData<T : Codable>(type : T.Type?, url: URL ,completion: @escaping (T?) -> ()) {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard
                 let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
-                let data = data, error == nil
+                let data = data, error == nil,
+                let type = type
             else {
                 completion(nil)
                 return }
             let jsonDecoder = JSONDecoder()
             do{
-                let decodedData = try jsonDecoder.decode(T.self, from: data)
+                let decodedData = try jsonDecoder.decode(type, from: data)
                 completion(decodedData)
             }catch let error{
                 completion(nil)

@@ -13,7 +13,7 @@ class DrinkViewModel {
     
     func getDrinksData(ingredient : String?, complete : @escaping () -> ())  {
         if let url = ingredientToUrl(ingredient){
-            HttpRequestHelper.shared.getData(type: DrinkDataModel(), url: url){ value in
+            HttpRequestHelper.shared.getData(type: DrinkDataModel.self, url: url){ value in
                 self.drinks = value?.drinks
                 complete()
             }
